@@ -10,7 +10,7 @@ free to do whatever you want with it.
 
 ### Browser support
 
-[![browser support](http://ci.testling.com/sykopomp/mona.png)](http://ci.testling.com/sykopomp/genfun.js)
+[![browser support](http://ci.testling.com/sykopomp/mona.png)](http://ci.testling.com/sykopomp/mona)
 
 ### Install
 
