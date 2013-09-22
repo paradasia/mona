@@ -1,4 +1,4 @@
-# Mona [![Build Status](https://travis-ci.org/sykopomp/mona.png)](https://travis-ci.org/sykopomp/mona) ![Dependencies Status](https://www.david-dm.org/sykopomp/mona.png)
+# Mona [![Build Status](https://travis-ci.org/sykopomp/mona.png)](https://travis-ci.org/sykopomp/mona)
 
 `mona` is
 [hosted at Github](http://github.com/sykopomp/mona). `mona` is a
