@@ -24,7 +24,7 @@ You can also download a prebuilt `UMD` version of `mona` from the
 
 * [mona.js](http://sykopomp.github.io/mona/build/mona.js)
 * [mona.min.js](http://sykopomp.github.io/mona/build/mona.min.js)
-* [mona.src.js](http://sykopomp.github.io/mona/build/mona.src.js) (source map
+* [mona.js.src](http://sykopomp.github.io/mona/build/mona.js.src) (source map
   for minified version)
 
 ### Example
