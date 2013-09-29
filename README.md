@@ -1,4 +1,4 @@
-# Mona [![Build Status](https://travis-ci.org/sykopomp/mona.png)](https://travis-ci.org/sykopomp/mona)
+# Mona [![NPM version](https://badge.fury.io/js/mona-parser.png)](http://badge.fury.io/js/mona-parser) [![Build Status](https://travis-ci.org/sykopomp/mona.png)](https://travis-ci.org/sykopomp/mona)
 
 `mona` is
 [hosted at Github](http://github.com/sykopomp/mona). `mona` is a
