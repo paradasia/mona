@@ -35,7 +35,10 @@ function nodeChildren() {
 
 function selfClosingTag() {
 	return mona.sequence(function(s) {
-		var nodeObj = s(mona.between(mona.trim(mona.string("<")), 
+		var nodeObj = s(mona.between(mona.unless(
+																							mona.trim(mona.string("</")),
+																							mona.trim(mona.string("<"))
+																							), 
 										mona.trim(mona.string("/>")), 
 										insideNode())
 										);
@@ -48,7 +51,10 @@ function selfClosingTag() {
 function openTag() {
 	return mona.sequence(function(s) {
 		var nodeObj = s(
-										mona.between(mona.trim(mona.string("<")),
+										mona.between(mona.unless(
+																							mona.trim(mona.string("</")),
+																							mona.trim(mona.string("<"))
+																							),
 																 mona.trim(mona.string(">")),
 																 insideNode())
 																);
@@ -58,6 +64,10 @@ function openTag() {
 			var foundText = s(innerText());
 			nodeObj.text = (foundText == "") ? null : foundText
 		} else {
+			//assign parent to the children
+			children.forEach(function(childEl){
+				childEl.parent = nodeObj;
+			});
 			nodeObj.text = null;
 		}
 		var closingTag = s(closeTag());
@@ -67,7 +77,6 @@ function openTag() {
 }
 
 function innerText() {
-	console.log("called innerText");
 	return mona.text(mona.unless(mona.string("<"), 
 															 mona.alphanum()));
 }
@@ -92,6 +101,7 @@ function insideNode() {
 		var attrs = s(mona.collect(attribute()));
 		var obj = {};
 		obj.tagname = tagN;
+		console.log("found tagname of ",tagN);
 		attrs.forEach(function(attr) {
 			obj[attr.name] = attr.value;
 		});
