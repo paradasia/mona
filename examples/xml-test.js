@@ -87,7 +87,7 @@ describe.only("xml", function() {
 		"<ok_fine be='that_way'/></come_back></goodbye></hello>");
 		var innermostChild = (doc.children[0].children[0]
 													.children[0].children[0]);
-		assert.equal(innermostChild.tagname, "come_back");
+		assert.equal(innermostChild.tagname, "ok_fine");
 		assert.equal(innermostChild.be, "that_way");
 		assert.equal(innermostChild.children.length, 0);
 		assert.equal(innermostChild.parent.tagname, "come_back");
@@ -104,7 +104,7 @@ describe.only("xml", function() {
 		var doc = parseXML(xmlText);
 		var innermostChild = (doc.children[0].children[0]
 													.children[0].children[0]);
-		assert.equal(innermostChild.tagname, "come_back");
+		assert.equal(innermostChild.tagname, "ok_fine");
 		assert.equal(innermostChild.be, "that_way");
 		assert.equal(innermostChild.children.length, 0);
 		assert.equal(innermostChild.parent.tagname, "come_back");

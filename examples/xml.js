@@ -111,7 +111,7 @@ function insideNode() {
 
 function tagName() {
 	return mona.text(mona.unless(mona.space(), 
-															 mona.alphanum()));
+															 mona.or(mona.alphanum(), mona.string("_"))));
 }
 
 function attrName() {
