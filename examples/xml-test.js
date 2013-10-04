@@ -26,7 +26,7 @@ describe.only("xml", function() {
 		var doc = parseXML("<hello />");
 		assert.equal(doc.children[0].tagname, "hello");
 		assert.equal(doc.children.length, 1);
-		// assert.equal(doc.children[0].children.length, 0);
+		assert.equal(doc.children[0].children.length, 0);
 		assert.equal(doc.parent, null );
 	});
 	
@@ -37,7 +37,7 @@ describe.only("xml", function() {
 		// How to DRY this out?
 		assert.equal(doc.children[0].tagname, "hello");
 		assert.equal(doc.children.length, 1);
-		// assert.equal(doc.children[0].children.length, 0);
+		assert.equal(doc.children[0].children.length, 0);
 		assert.equal(doc.parent, null );
 	});
 	

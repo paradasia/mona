@@ -30,16 +30,57 @@ function doc() {
 }
 
 function nodeChildren() {
-	return mona.collect(node());
+	return mona.collect(mona.delay(node));
+}
+
+function selfClosingTag() {
+	return mona.sequence(function(s) {
+		var nodeObj = s(mona.between(mona.trim(mona.string("<")), 
+										mona.trim(mona.string("/>")), 
+										insideNode())
+										);
+	  nodeObj.children = [];
+		nodeObj.text = null;
+		return mona.value(nodeObj);
+	});
+}
+
+function openTag() {
+	return mona.sequence(function(s) {
+		var nodeObj = s(
+										mona.between(mona.trim(mona.string("<")),
+																 mona.trim(mona.string(">")),
+																 insideNode())
+																);
+	  var children = s(nodeChildren());
+	  nodeObj.children = children;
+		if (children.length === 0) {
+			var foundText = s(innerText());
+			nodeObj.text = (foundText == "") ? null : foundText
+		} else {
+			nodeObj.text = null;
+		}
+		var closingTag = s(closeTag());
+		return mona.value(nodeObj);
+	
+	});	
+}
+
+function innerText() {
+	console.log("called innerText");
+	return mona.text(mona.unless(mona.string("<"), 
+															 mona.alphanum()));
+}
+
+function closeTag() {
+	console.log("closingTag was called");
+	return mona.between(mona.trim(mona.string("</")),
+							 mona.trim(mona.string(">")),
+							 insideNode());
 }
 
 function node() {
-	return mona.between(mona.trim(mona.string("<")),
-											mona.trim(mona.or(
-												mona.string(">"),
-												mona.string("/>"))
-												),
-											insideNode());
+	return mona.or(selfClosingTag(), openTag());
 }
 
 function insideNode() {
@@ -48,26 +89,25 @@ function insideNode() {
 	// 								"tagname");
 	return mona.sequence(function(s) {
 		var tagN = s(tagName());
-		var attrs = s(mona.log(mona.collect(attribute())), "meow");
+		var attrs = s(mona.collect(attribute()));
 		var obj = {};
 		obj.tagname = tagN;
 		attrs.forEach(function(attr) {
 			obj[attr.name] = attr.value;
 		});
-		console.log("It's about to return: ", obj);
 		return mona.value(obj);
 	});
 }
 
 function tagName() {
 	return mona.text(mona.unless(mona.space(), 
-															 mona.token()));
+															 mona.alphanum()));
 }
 
 function attrName() {
 	return mona.text(mona.unless(mona.or(mona.string("="),
 																			 mona.space()),
-															 mona.token()));
+															 mona.alphanum()));
 }
 
 function attrVal() {
