@@ -850,5 +850,99 @@ describe("mona", function() {
         assert.equal(parse(mona.float(), "1.25e-3"), 1.25e-3);
       });
     });
+		describe("cardinal()", function() {
+			it("parses zero through nine", function() {
+				assert.equal(parse(mona.cardinal("zero")), 0);
+				assert.equal(parse(mona.cardinal("one")), 1);
+				assert.equal(parse(mona.cardinal("two")), 2);
+				assert.equal(parse(mona.cardinal("three")), 3);
+				assert.equal(parse(mona.cardinal("four")), 4);
+				assert.equal(parse(mona.cardinal("five")), 5);
+				assert.equal(parse(mona.cardinal("six")), 6);
+				assert.equal(parse(mona.cardinal("seven")), 7);
+				assert.equal(parse(mona.cardinal("eight")), 8);
+				assert.equal(parse(mona.cardinal("nine")), 9);
+			});
+			it("parses ten through twelve", function() {
+				assert.equal(parse(mona.cardinal("ten")), 10);
+				assert.equal(parse(mona.cardinal("eleven")), 11);
+				assert.equal(parse(mona.cardinal("twelve")), 12);
+			});
+			it("parses 'teens", function() {
+				assert.equal(parse(mona.cardinal("thirteen")), 13);
+				assert.equal(parse(mona.cardinal("fourteen")), 14);
+				assert.equal(parse(mona.cardinal("fifteen")), 15);
+				assert.equal(parse(mona.cardinal("sixteen")), 16);
+				assert.equal(parse(mona.cardinal("seventeen")), 17);
+				assert.equal(parse(mona.cardinal("eighteen")), 18);
+				assert.equal(parse(mona.cardinal("nineteen")), 19);
+			});
+			it("parses 'tens", function() {
+				assert.equal(parse(mona.cardinal("twenty")), 20);
+				assert.equal(parse(mona.cardinal("thirty")), 30);
+				assert.equal(parse(mona.cardinal("forty")), 40);
+				assert.equal(parse(mona.cardinal("fifty")), 50);
+				assert.equal(parse(mona.cardinal("sixty")), 60);
+				assert.equal(parse(mona.cardinal("seventy")), 70);
+				assert.equal(parse(mona.cardinal("eighty")), 80);
+				assert.equal(parse(mona.cardinal("ninety")), 90);
+			});
+			it("parses various number less than one hundred", function() {
+				assert.equal(parse(mona.cardinal("twenty two")), 22);
+				assert.equal(parse(mona.cardinal("sixty seven")), 67);
+				assert.equal(parse(mona.cardinal("ninety nine")), 99);
+			});
+			it("reads hundreds", function() {
+				assert.equal(parse(mona.cardinal("one hundred")), 100);
+				assert.equal(parse(mona.cardinal("two hundred")), 200);
+				assert.equal(parse(mona.cardinal("three hundred")), 300);
+				assert.equal(parse(mona.cardinal("one hundred twenty three")), 123);
+				assert.equal(parse(mona.cardinal("seven hundred seventy seven")), 777);
+				assert.equal(parse(mona.cardinal("eight hundred eighteen")), 818);
+				assert.equal(parse(mona.cardinal("five hundred twelve")), 512);
+				assert.equal(parse(mona.cardinal("nine hundred ninetey nine")), 999);
+			});
+			it("reads thousands", function() {
+				assert.equal(parse(mona.cardinal("one thousand")), 1000);
+				assert.equal(parse(
+					mona.cardinal("thirty two thousand seven hundred sixty seven")
+												), 32767);
+				assert.equal(parse(
+					mona.cardinal("thirty two thousand seven hundred sixty eight")
+												), 32768);
+			});
+			it("reads billions", function() {
+				assert.equal(parse(
+					mona.cardinal(
+						"one billion two hundred thirty four million " + 
+						"five hundred sixty seven thousand eight hundred ninety"
+						)), 1234567890);
+			});
+			it("reads trillions", function() {
+				assert.equal(parse(mona.cardinal("one trillion")), 1000000000000);
+				assert.equal(parse(mona.cardinal("one trillion one"),
+				1000000000001));
+				assert.equal(parse(mona.cardinal("nine-hundred-ninetey-nine")), 999);
+				mona.cardinal(
+					"one trillion eight hundred eighty eight billion " +
+					"two hundred fifty nine million forty thousand thirty six"
+					)), 1888259040036);
+			});
+			it("ignores dashes", function() {
+				assert.equal(parse(mona.cardinal("twenty-two")), 22);
+				assert.equal(parse(mona.cardinal("sixty-seven")), 67);
+				assert.equal(parse(mona.cardinal("ninety-nine")), 99);
+				assert.equal(parse(mona.cardinal("nine-hundred-ninetey-nine")), 999);
+				mona.cardinal(
+					"one-billion two-hundred thirty-four-million " + 
+					"five-hundred-sixty-seven-thousand eight-hundred-ninety"
+					)), 1234567890);
+				assert.equal(parse(mona.cardinal("nine-hundred-ninetey-nine")), 999);
+				mona.cardinal(
+					"one-trillion eight-hundred eighty-eight-billion " +
+					"two-hundred-fifty-nine-million forty-thousand thirty-six"
+					)), 1888259040036);
+			});
+		});
   });
 });
