@@ -5,14 +5,21 @@ var mona = require("../src/mona");
 /*
  * XML Parser
  * 
+ * Loosely emulates parser functionality from 'Learn Ruby' Test-First Curriculum
+ * Exercise #13
+ * https://github.com/alexch/learn_ruby/tree/master/13_xml_document
+ * AND the HTML parsing of 'Beautiful Soup 4.2' (python)
+ * http://www.crummy.com/software/BeautifulSoup/bs4/doc/
  */
 
-var exampleNode = {
-	tagname: "hello",
-	children: [], //could contain other Node hashes
-	parent: null, //could point to another Node
-	name: "dolly"
-}
+// Parses the XML into hashes with the following format:
+
+// var exampleNode = {
+// 	tagname: "hello",
+// 	children: [], //could contain other Node hashes
+// 	parent: null, //could point to another Node
+// 	name: "dolly"
+// }
 
 function xml() {
 	return mona.trim(
@@ -140,19 +147,6 @@ function attribute() {
   });
 }
 
-//Josh's magic function
-
-function experiment() {
-	return mona.sequence(function(s) {
-		var x = s(mona.alpha());
-		var xs = s(mona.collect(mona.alpha()));
-		var obj = {};
-		obj.t = x;
-		obj.foo = xs;
-		return mona.value(obj);
-	});
-}
-
 function parseXML(text) {
 	return mona.parse(xml(), text);
 }
@@ -165,8 +159,6 @@ function runExample() {
 									"    </come_back>\n" + 
 									"  </goodbye>\n" + 
 									"</hello>");
-									
-	//How to add the newlines?
 	
 	console.log("Parsing:\n", xmlText,
 	"=>\n", parseXML(xmlText));

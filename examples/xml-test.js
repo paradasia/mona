@@ -4,13 +4,28 @@
 var assert = require("assert"),
 		xml = require("./xml"),
 		parseXML = xml.parseXML,
-		//temp
 		attribute = xml.attribute,
 		mona = require("../src/mona");
 		
+// Testing Helpers
+
+function xml_base_tests(target, opts) {
+	assert.equal(target["children"][0]["tagname"], opts["tagname"]);
+	assert.equal(target["children"]["length"], opts["doc_children"]);
+	assert.equal(target["children"][0]["children"]["length"], opts["first_el_children"]);
+	assert.equal(target["parent"], null);
+}
+
+var base_vals = {
+	"tagname": "hello",
+	"doc_children": 1,
+	"first_el_children": 0
+};
+
+//
 		
-describe.only("xml", function() {
-	//temporary : delete later
+		
+describe("xml", function() {
 	describe("attribute", function() {
 		it("parses an attribute", function() {
 			assert.deepEqual(mona.parse(attribute(), " foo='bar' "),
@@ -18,27 +33,15 @@ describe.only("xml", function() {
 		});
 	});
 	
-	//
-	
-	
-	
 	it("parses an empty tag", function() {
 		var doc = parseXML("<hello />");
-		assert.equal(doc.children[0].tagname, "hello");
-		assert.equal(doc.children.length, 1);
-		assert.equal(doc.children[0].children.length, 0);
-		assert.equal(doc.parent, null );
+		xml_base_tests(doc, base_vals);
 	});
 	
 	it("parses a tag with attributes", function() {
 		var doc = parseXML("<hello name='dolly' />");
-		// Should the attributes really become instance vars of the nodes?
 		assert.equal(doc.children[0].name, "dolly");
-		// How to DRY this out?
-		assert.equal(doc.children[0].tagname, "hello");
-		assert.equal(doc.children.length, 1);
-		assert.equal(doc.children[0].children.length, 0);
-		assert.equal(doc.parent, null );
+		xml_base_tests(doc, base_vals);
 	});
 	
 	it("parses a randomly named tag", function() {
@@ -48,31 +51,23 @@ describe.only("xml", function() {
 			randomName = Math.random().toString(36).substring(7);
 		}
 		var doc = parseXML("<" + randomName + "/>");
-		assert.equal(doc.children[0].tagname, randomName);
-		// again, need to DRY this out?
-		assert.equal(doc.children.length, 1);
-		assert.equal(doc.children[0].children.length, 0);
-		assert.equal(doc.parent, null );
+		xml_base_tests(doc, {
+			"tagname": randomName,
+			"doc_children": 1,
+			"first_el_children": 0
+		});
 	});
 	
 	it("parses a tag with nested text", function() {
 		var doc = parseXML("<hello>dolly</hello>");
 		assert.equal(doc.children[0].text, "dolly");
-		// again, need to DRY this out?
-		assert.equal(doc.children[0].tagname, "hello");
-		assert.equal(doc.children.length, 1);
-		assert.equal(doc.children[0].children.length, 0);
-		assert.equal(doc.parent, null );
+		xml_base_tests(doc, base_vals);
 	});
 	
 	it("parses a tag with nothing inside", function() {
 		var doc = parseXML("<hello></hello>");
 		assert.equal(doc.children[0].text, null);
-		// again, need to DRY this out?
-		assert.equal(doc.children[0].tagname, "hello");
-		assert.equal(doc.children.length, 1);
-		assert.equal(doc.children[0].children.length, 0);
-		assert.equal(doc.parent, null );
+		xml_base_tests(doc, base_vals);
 	});
 	
 	it("parses tags nested one level deep", function() {
@@ -111,13 +106,7 @@ describe.only("xml", function() {
 	})
 
 	describe("error messages", function() {
-		// Context: When HTML is broken
-		//Reference the below once I know what msgs to expect:
-		// it("replaces any error messages with an expectation", function() {
-		//     assert.throws(function() {
-		//       parse(mona.label(mona.fail(), "wee"), "");
-		//     }, /\(line 1, column 0\) expected wee/);
-		//   });
+		// Context: When XML is broken
 		
 		it("Raises an error on unclosed tag", function() {
 			assert.throws(function() {
